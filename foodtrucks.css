@@ -1,2 +1,9 @@
 #map {
   height: 100vh; }
+
+.options {
+  height: 100vh;
+  overflow: scroll; }
+
+#building_types {
+  font-size: 12px; }
