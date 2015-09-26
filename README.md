@@ -7,7 +7,7 @@ The web app allows food trucks to search through Kenmore and target specific are
 
 Foodies For Kenmore was developed on September 26th, 2015 for the Code for Kenmore event.
 
-Challenge and Approach
+<b>Challenge and Approach</b>
 
 Our submission seeks to solve three problems:
 
@@ -21,7 +21,7 @@ Our approach for satisfying this challenge was to:
     Show Customers where Food Trucks are
     Provide a history of Food Trucks who have operated in Kenmore.
 
-Team Members
+<b>Team Members</b>
 
 Our team is comprised of:
 
@@ -29,7 +29,7 @@ Our team is comprised of:
     @IgorTal Igor Talpalatski
     @PaulYoum Paul Youm
 
-Technologies, APIs, and Datasets Utilized
+<b>Technologies, APIs, and Datasets Utilized</b>
 
 We made use of:
 
