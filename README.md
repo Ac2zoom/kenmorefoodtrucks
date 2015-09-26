@@ -26,7 +26,7 @@ Team Members
 Our team is comprised of:
 
     @DavidKarn David Karn
-    @IgorTal Igor Talpalatsky
+    @IgorTal Igor Talpalatski
     @PaulYoum Paul Youm
 
 Technologies, APIs, and Datasets Utilized
