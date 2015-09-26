@@ -91,7 +91,7 @@ function filter_commercial_buildings() {
     
     for (var i in building_types) {
         var type    = building_types[i];
-        if (already_selected[type.label] < 7) continue;
+        if (already_selected[type.label] < 4) continue;
         var id      = Math.random().toString().slice(2);
         var _label   = type.label.match(/.*\(/) + already_selected[type.label].toString() + ')';
         var el      = build_el(label({for: id},
