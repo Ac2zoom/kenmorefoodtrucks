@@ -11,14 +11,13 @@ var mapbox_access_token     = ('pk.eyJ1IjoiZGF2aWRrYXJuIiwiYSI6ImNpZjFmdXlpYzBmb
 var layers                  = {};
 var map;
 var saved_coords            = {};
-var heatmap_layer_options   = {};
-/*        {vacancies:  {gradient: {0.33: '#400', 0.66: '#a00', 1: '#f00'},
-                       minOpacity: 0.3},
-         employees:  {gradient: {0.33: '#004', 0.66: '#00a', 1: '#00f'},
-                       minOpacity: 0.8},
-         buildings:  {gradient: {0.33: '#004400', 0.66: '#009900', 1: '#00ff00'},
-                      minOpacity: 0.6}};
-*/
+var heatmap_layer_options   = 
+        {vacancies:  {},
+         employees:  {blur:        100,
+                      minOpacity:  0.2,
+                      radius:      40},
+         buildings:  {}};
+
 employees = employees.map(function(e) {
     return [e[1], e[0]]; });
 
