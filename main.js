@@ -12,8 +12,10 @@ var layers                  = {};
 var map;
 
 var heatmap_layer_options =
-        {vacant:      {gradient: {0.33: '#400', 0.66: '#900', 1: '#f00'}},
-         commercial:  {gradient: {0.33: '#004400', 0.66: '#009900', 1: '#00ff00'}}};
+        {vacant:      {gradient: {0.33: '#400', 0.66: '#a00', 1: '#f00'},
+                       minOpacity: 0.3},
+         commercial:  {gradient: {0.33: '#004400', 0.66: '#009900', 1: '#00ff00'},
+                       minOpacity: 0.6}};
 
 function lookup(resource, query, next, error) {
     var query_params = {};
@@ -69,9 +71,20 @@ function plot_coords_heat(coords, layer) {
 function init_map() {
     map = L.map('map')
         .setView(kenmore_coords, 13);
-    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                {attribution: 'osm'})
-        .addTo(map);
+   /* layers.google_satellite = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z=?z',
+                                          {attribution: 'google',
+                                           maxZoon: 20,
+                                           subdomains: ['mt0', 'mt1', 'mt2', 'mt3']});*/
+    layers.google_satellite = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
+    maxZoom: 20,
+    subdomains:['mt0','mt1','mt2','mt3']
+});
+    layers.google_satellite.addTo(map);
+    layers.osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                             {attribution: 'osm',
+                             opacity: 0.4});
+    layers.osm.addTo(map);
+
     return map; }
 
 $(document).ready(function() {
