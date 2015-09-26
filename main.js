@@ -10,12 +10,17 @@ var mapbox_access_token     = ('pk.eyJ1IjoiZGF2aWRrYXJuIiwiYSI6ImNpZjFmdXlpYzBmb
                                + 'zcW01bDF3b3kyMTIifQ.-ilX5JP9cl1MrPMQUZJ6Gw');
 var layers                  = {};
 var map;
-
-var heatmap_layer_options =
-        {vacant:      {gradient: {0.33: '#400', 0.66: '#a00', 1: '#f00'},
+var saved_coords            = {};
+var heatmap_layer_options   = {};
+/*        {vacancies:  {gradient: {0.33: '#400', 0.66: '#a00', 1: '#f00'},
                        minOpacity: 0.3},
-         commercial:  {gradient: {0.33: '#004400', 0.66: '#009900', 1: '#00ff00'},
-                       minOpacity: 0.6}};
+         employees:  {gradient: {0.33: '#004', 0.66: '#00a', 1: '#00f'},
+                       minOpacity: 0.8},
+         buildings:  {gradient: {0.33: '#004400', 0.66: '#009900', 1: '#00ff00'},
+                      minOpacity: 0.6}};
+*/
+employees = employees.map(function(e) {
+    return [e[1], e[0]]; });
 
 function lookup(resource, query, next, error) {
     var query_params = {};
@@ -56,6 +61,7 @@ function socrata_latlngs(dataset, next) {
                next(coords); }); }
                
 function plot_coords_heat(coords, layer) {
+    saved_coords[layer] = coords;
     console.log(coords, layer);
     layer           = layer || Math.random().toString();
     var map_layer   = layers[layer];
@@ -89,16 +95,24 @@ function init_map() {
     return map; }
 
 function re_draw() {
-    var osm        = $('#osm').prop('checked');
-    var satellite  = $('#satellite').prop('checked');
-    console.log(osm, satellite);
+    var osm           = $('#osm').prop('checked');
+    var satellite     = $('#satellite').prop('checked');
+    var heat_layers   = ['vacancies', 'employees', 'buildings'];
+
+    heat_layers.map(function(layer) {
+        if (!$('#' + layer).prop('checked'))
+            layers[layer].setLatLngs([]);
+        else
+            layers[layer].setLatLngs(saved_coords[layer]); });
+
     layers.osm.setOpacity(osm ? 1 : 0);
     layers.google_satellite.setOpacity(satellite ? 1 : 0); }
 
 $(document).ready(function() {
     init_map();
-    socrata_commercial_buildings_latlngs(curry(plot_coords_heat, undefined, 'commercial'));
+    plot_coords_heat(employees, 'employees');
+    socrata_commercial_buildings_latlngs(curry(plot_coords_heat, undefined, 'buildings'));
     setTimeout(function() {
-        socrata_vacant_lots_latlngs(curry(plot_coords_heat, undefined, 'vacant')); }, 1000);
+        socrata_vacant_lots_latlngs(curry(plot_coords_heat, undefined, 'vacancies')); }, 1000);
 
     $('input').change(re_draw); });

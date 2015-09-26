@@ -10,6 +10,7 @@
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     <script src="http://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js"></script>
     <script src="utils.js"></script>
+    <script src="employeeLocations.js"></script>
     <script src="main.js"></script>
   </head>
   <body>
@@ -28,6 +29,22 @@
         </label>
         <br /><br />
         <h4>Visualize</hr>
+        <label for="buildings">
+          <input type="checkbox" name="map" id="buildings" data-layer-name="buildings" checked
+                 class="map_layer"/>
+          Commercial Buildings
+        </label>
+        <label for="employees">
+          <input type="checkbox" name="map" id="employees" data-layer-name="employees" checked
+                 class="map_layer"/>
+          Employee Density
+        </label>
+        <label for="vacancies">
+          <input type="checkbox" checked id="vacancies" data-layer-name="osm" name=""
+                 class="map_layer"/>
+          Vacancies
+        </label>
+        <br /><br />
         
       </div>
       <div class="map-area col-md-9">
