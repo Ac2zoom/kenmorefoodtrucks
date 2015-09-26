@@ -14,11 +14,12 @@ var building_types          = [];
 var layers                  = {};
 var saved_coords            = {};
 var heatmap_layer_options   = 
-        {vacancies:  {},
+        {vacancies:  {gradient: {0.3: 'blue', 0.5: 'lime', 0.7: 'red'}},
          employees:  {blur:        100,
                       minOpacity:  0.2,
                       radius:      40},
-         buildings:  {}};
+         buildings:  {gradient: {0.1: 'blue', 0.3: 'lime', 0.5: 'red'},
+                      minOpacity: 0.2}};
 
 employees = employees.map(function(e) {
     return [e[1], e[0]]; });

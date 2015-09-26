@@ -7,3 +7,6 @@
 
 #building_types {
   font-size: 12px; }
+
+label {
+  display: block; }
