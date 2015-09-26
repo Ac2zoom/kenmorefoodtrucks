@@ -11,6 +11,10 @@ var mapbox_access_token     = ('pk.eyJ1IjoiZGF2aWRrYXJuIiwiYSI6ImNpZjFmdXlpYzBmb
 var layers                  = {};
 var map;
 
+var heatmap_layer_options =
+        {vacant:      {gradient: {0.33: '#400', 0.66: '#900', 1: '#f00'}},
+         commercial:  {gradient: {0.33: '#004400', 0.66: '#009900', 1: '#00ff00'}}};
+
 function lookup(resource, query, next, error) {
     var query_params = {};
     if (query.where)
@@ -37,22 +41,30 @@ function in_kenmore_parcel(query) {
     return query; }
 
 function socrata_commercial_buildings_latlngs(next) {
-    lookup(commercial_buildings, in_kenmore(),
+    socrata_latlngs(commercial_buildings, next); }
+
+function socrata_vacant_lots_latlngs(next) {
+    socrata_latlngs(vacant_lots, next); }
+
+function socrata_latlngs(dataset, next) {
+    lookup(dataset, in_kenmore(),
            function(buildings) {
                var coords = buildings.map(function(building) {
                    return [parseFloat(building.latitude), parseFloat(building.longitude)]; });
                next(coords); }); }
                
 function plot_coords_heat(coords, layer) {
+    console.log(coords, layer);
     layer           = layer || Math.random().toString();
     var map_layer   = layers[layer];
     
     if (map_layer) {
         map_layer.setLatLngs(coords);
         map_layer.redraw(); }
-    
-    layers[layer] = L.heatLayer(coords, {});
-    layers[layer].addTo(map); }
+    else {
+        var options     = heatmap_layer_options[layer];
+        layers[layer]   = L.heatLayer(coords, options);
+        layers[layer].addTo(map); }}
 
 function init_map() {
     map = L.map('map')
@@ -64,4 +76,6 @@ function init_map() {
 
 $(document).ready(function() {
     init_map();
-    socrata_commercial_buildings_latlngs(plot_coords_heat); });
+    socrata_commercial_buildings_latlngs(curry(plot_coords_heat, undefined, 'commercial'));
+    setTimeout(function() {
+        socrata_vacant_lots_latlngs(curry(plot_coords_heat, undefined, 'vacant')); }, 1000); });
