@@ -8,6 +8,7 @@ var kenmore_coords          = [47.752778, -122.247222];
 var mapbox_id               = 'davidkarn.ni38i7gd';
 var mapbox_access_token     = ('pk.eyJ1IjoiZGF2aWRrYXJuIiwiYSI6ImNpZjFmdXlpYzBmbDB'
                                + 'zcW01bDF3b3kyMTIifQ.-ilX5JP9cl1MrPMQUZJ6Gw');
+var layers                  = {};
 var map;
 
 function lookup(resource, query, next, error) {
@@ -35,18 +36,32 @@ function in_kenmore_parcel(query) {
     query.where.push('zip_code = ' + kenmore_zip);
     return query; }
 
+function socrata_commercial_buildings_latlngs(next) {
+    lookup(commercial_buildings, in_kenmore(),
+           function(buildings) {
+               var coords = buildings.map(function(building) {
+                   return [parseFloat(building.latitude), parseFloat(building.longitude)]; });
+               next(coords); }); }
+               
+function plot_coords_heat(coords, layer) {
+    layer           = layer || Math.random().toString();
+    var map_layer   = layers[layer];
+    
+    if (map_layer) {
+        map_layer.setLatLngs(coords);
+        map_layer.redraw(); }
+    
+    layers[layer] = L.heatLayer(coords, {});
+    layers[layer].addTo(map); }
+
 function init_map() {
     map = L.map('map')
         .setView(kenmore_coords, 13);
-    // L.tileLayer('https://api.tile.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
-    //             {attribution:  '',
-    //              maxZoom:      18,
-    //              id:           mapbox_id,
-    //              accessToken:  mapbox_access_token})
     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 {attribution: 'osm'})
         .addTo(map);
     return map; }
 
 $(document).ready(function() {
-    init_map(); });
+    init_map();
+    socrata_commercial_buildings_latlngs(plot_coords_heat); });
