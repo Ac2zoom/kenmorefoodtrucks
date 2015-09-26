@@ -76,19 +76,29 @@ function init_map() {
                                            maxZoon: 20,
                                            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']});*/
     layers.google_satellite = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
-    maxZoom: 20,
-    subdomains:['mt0','mt1','mt2','mt3']
-});
+        maxZoom:       20,
+        subdomains:  ['mt0','mt1','mt2','mt3'],
+        opacity:       0 });
+    
     layers.google_satellite.addTo(map);
     layers.osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                              {attribution: 'osm',
-                             opacity: 0.4});
+                             opacity: 1});
     layers.osm.addTo(map);
 
     return map; }
+
+function re_draw() {
+    var osm        = $('#osm').prop('checked');
+    var satellite  = $('#satellite').prop('checked');
+    console.log(osm, satellite);
+    layers.osm.setOpacity(osm ? 1 : 0);
+    layers.google_satellite.setOpacity(satellite ? 1 : 0); }
 
 $(document).ready(function() {
     init_map();
     socrata_commercial_buildings_latlngs(curry(plot_coords_heat, undefined, 'commercial'));
     setTimeout(function() {
-        socrata_vacant_lots_latlngs(curry(plot_coords_heat, undefined, 'vacant')); }, 1000); });
+        socrata_vacant_lots_latlngs(curry(plot_coords_heat, undefined, 'vacant')); }, 1000);
+
+    $('input').change(re_draw); });

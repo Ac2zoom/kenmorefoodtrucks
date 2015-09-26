@@ -15,7 +15,20 @@
   <body>
     <div class="main-container">
       <div class="options col-md-3">
-        stuff over here...
+        <h4>Layers</h4>
+        <label for="satellite">
+          <input type="radio" name="map" id="satellite" data-layer-name="google_satellite"
+                 class="map_layer"/>
+          Google Maps (satellite)
+        </label>
+        <label for="osm">
+          <input type="radio" checked id="osm" data-layer-name="osm" name="map"
+                 class="map_layer"/>
+          Open Street Map
+        </label>
+        <br /><br />
+        <h4>Visualize</hr>
+        
       </div>
       <div class="map-area col-md-9">
         <div id="map">
