@@ -18,6 +18,7 @@ var heatmap_layer_options   =
         {vacancies:  {gradient: {0.3: 'blue', 0.5: 'lime', 0.7: 'red'}},
          employees:  {blur:        100,
                       minOpacity:  0.2,
+                      max:         0.04,
                       radius:      40},
          buildings:  {gradient: {0.1: 'blue', 0.3: 'lime', 0.5: 'red'},
                       minOpacity: 0.2}};
