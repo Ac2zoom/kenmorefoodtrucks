@@ -83,15 +83,20 @@ function plot_coords_heat(coords, layer) {
         layers[layer].addTo(map); }}
 
 function filter_commercial_buildings() {
+    var already_selected = {};
     building_data.map(function(b) {
-        building_types.push({label: b.predominant_use}); });
+        if (!already_selected[b.predominant_use])
+            building_types.push({label: b.predominant_use}); 
+        already_selected[b.predominant_use] = (already_selected[b.predominant_use] || 0) + 1; });
     
     for (var i in building_types) {
         var type    = building_types[i];
+        if (already_selected[type.label] < 7) continue;
         var id      = Math.random().toString().slice(2);
+        var _label   = type.label.match(/.*\(/) + already_selected[type.label].toString() + ')';
         var el      = build_el(label({for: id},
                                      [_input({type: 'checkbox', id: id}),
-                                      type.label]));
+                                      _label]));
         var input   = el.find('input');
         
         input.change(re_draw_buildings);

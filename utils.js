@@ -256,3 +256,11 @@ function build_el(el) {
 
     return element; }
 
+function uniq(ar) {
+    var found = [];
+
+    for (var i in ar)
+        if (found.indexOf(ar[i]) < 0)
+            found.push(ar[i]);
+
+    return found; }
